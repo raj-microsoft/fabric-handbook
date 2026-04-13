@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presenter Handbook — The Road Ahead for AI in Fabric</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#09090b;--surface:#111113;--surface2:#1a1a1f;--border:#27272a;--text:#fafafa;--text2:#a1a1aa;--blue:#0078d4;--blue2:#2b88d8;--green:#22c55e;--amber:#f59e0b;--purple:#a855f7;--red:#ef4444;--radius:12px}
+html{scroll-behavior:smooth;scroll-padding-top:2rem}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:var(--blue2);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Layout */
+.layout{display:flex;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;width:280px;min-width:280px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;padding:1.5rem 0;z-index:100}
+.sidebar-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--blue);padding:0 1.5rem;margin-bottom:1rem}
+.sidebar nav a{display:flex;align-items:center;gap:.5rem;padding:.5rem 1.5rem;font-size:.85rem;color:var(--text2);transition:all .15s}
+.sidebar nav a:hover,.sidebar nav a.active{color:var(--text);background:var(--surface2);text-decoration:none;border-right:2px solid var(--blue)}
+.sidebar nav a .emoji{font-size:1rem;width:1.5rem;text-align:center}
+.main{flex:1;max-width:900px;margin:0 auto;padding:2rem 3rem 4rem}
+
+/* Hero */
+.hero{text-align:center;padding:3rem 0 2rem;border-bottom:1px solid var(--border);margin-bottom:3rem}
+.hero h1{font-size:2.2rem;font-weight:800;line-height:1.2;margin-bottom:.5rem}
+.hero h1 .accent{color:var(--blue)}
+.hero .subtitle{color:var(--text2);font-size:1rem;margin-bottom:1rem}
+.hero .meta{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;font-size:.85rem;color:var(--text2)}
+.hero .meta span{display:flex;align-items:center;gap:.35rem}
+
+/* Section */
+section{margin-bottom:3rem}
+section > h2{font-size:1.5rem;font-weight:700;margin-bottom:1.5rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
+section > h2 .badge{font-size:.7rem;padding:.2rem .6rem;border-radius:999px;background:var(--blue);color:#fff;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+
+/* Act header */
+.act-header{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+.act-header h3{font-size:1.1rem;font-weight:700}
+.act-meta{display:flex;gap:1rem;font-size:.8rem;color:var(--text2);flex-wrap:wrap}
+.act-meta span{display:flex;align-items:center;gap:.3rem}
+.story-arc{font-size:.85rem;color:var(--text2);font-style:italic;margin-bottom:1.5rem;padding-left:1rem;border-left:2px solid var(--blue)}
+
+/* Cards */
+.slide-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem;transition:border-color .15s}
+.slide-card:hover{border-color:var(--blue)}
+.slide-card .card-head{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap}
+.slide-card .slide-num{font-size:.7rem;font-weight:700;background:var(--blue);color:#fff;padding:.15rem .5rem;border-radius:999px}
+.slide-card .card-head h4{font-size:1rem;font-weight:600;flex:1}
+.slide-card p{color:var(--text2);font-size:.9rem;margin-bottom:.5rem}
+.slide-card .tip{background:var(--surface2);border-left:3px solid var(--amber);padding:.5rem .75rem;border-radius:0 var(--radius) var(--radius) 0;font-size:.8rem;color:var(--amber);margin-top:.75rem}
+.slide-card .key-msg{background:var(--surface2);border-left:3px solid var(--blue);padding:.5rem .75rem;border-radius:0 var(--radius) var(--radius) 0;font-size:.8rem;color:var(--blue2);margin-top:.75rem}
+.slide-card .transition{color:var(--text2);font-size:.8rem;font-style:italic;margin-top:.5rem}
+.slide-card .demo-badge{display:inline-block;font-size:.65rem;font-weight:700;background:var(--red);color:#fff;padding:.15rem .5rem;border-radius:999px;text-transform:uppercase}
+
+/* Status badges */
+.status{display:inline-block;font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:999px;text-transform:uppercase;letter-spacing:.03em}
+.status-ga{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.status-preview{background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
+.status-coming{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+
+/* Feature table */
+.feature-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.feature-table th{text-align:left;padding:.6rem .75rem;border-bottom:2px solid var(--border);color:var(--text2);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+.feature-table td{padding:.6rem .75rem;border-bottom:1px solid var(--border)}
+.feature-table tr:hover td{background:var(--surface2)}
+.feature-table td:last-child{color:var(--text2);font-size:.8rem}
+
+/* Q&A */
+.qa-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.75rem;overflow:hidden}
+.qa-item summary{padding:1rem 1.25rem;cursor:pointer;font-weight:600;font-size:.9rem;list-style:none;display:flex;align-items:center;gap:.5rem}
+.qa-item summary::before{content:'▸';color:var(--blue);font-size:.8rem;transition:transform .2s}
+.qa-item[open] summary::before{transform:rotate(90deg)}
+.qa-item .qa-answer{padding:0 1.25rem 1rem;color:var(--text2);font-size:.85rem;line-height:1.7}
+
+/* Checklist */
+.checklist{list-style:none;display:grid;gap:.5rem}
+.checklist li{display:flex;align-items:flex-start;gap:.5rem;font-size:.9rem;color:var(--text2);padding:.5rem .75rem;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+.checklist li::before{content:'☐';font-size:1rem;color:var(--blue);flex-shrink:0}
+.checklist-section{font-weight:700;color:var(--text);margin:1.5rem 0 .75rem;font-size:.95rem;display:flex;align-items:center;gap:.5rem}
+
+/* Links grid */
+.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem}
+.link-card{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:border-color .15s}
+.link-card:hover{border-color:var(--blue);text-decoration:none}
+.link-card .link-icon{font-size:1.2rem;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:8px;flex-shrink:0}
+.link-card .link-text{font-size:.85rem;font-weight:500;color:var(--text)}
+.link-card .link-url{font-size:.7rem;color:var(--text2)}
+
+/* Audience grid */
+.audience-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+.audience-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.audience-box h4{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);margin-bottom:.75rem}
+.audience-box ul{list-style:none;display:grid;gap:.4rem}
+.audience-box li{font-size:.85rem;color:var(--text2);display:flex;align-items:center;gap:.4rem}
+.audience-box li::before{content:'→';color:var(--blue);font-size:.75rem}
+
+/* Overview table */
+.overview-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:1.5rem}
+.overview-table th{text-align:left;padding:.6rem .75rem;border-bottom:2px solid var(--border);color:var(--text2);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+.overview-table td{padding:.6rem .75rem;border-bottom:1px solid var(--border)}
+.overview-table tr:hover td{background:var(--surface2)}
+.energy{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:.3rem}
+.energy-warm{background:var(--green)}.energy-core{background:var(--blue)}.energy-tech{background:var(--purple)}.energy-practical{background:var(--green)}.energy-high{background:var(--red)}
+
+.takeaway{background:linear-gradient(135deg,rgba(0,120,212,.1),rgba(0,120,212,.05));border:1px solid rgba(0,120,212,.2);border-radius:var(--radius);padding:1rem 1.25rem;font-size:.9rem;color:var(--blue2);margin-top:1rem}
+
+/* Footer */
+footer{text-align:center;padding:2rem;border-top:1px solid var(--border);color:var(--text2);font-size:.8rem;margin-top:3rem}
+
+/* Mobile toggle */
+.sidebar-toggle{display:none;position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;width:48px;height:48px;border-radius:50%;background:var(--blue);border:none;color:#fff;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+
+/* Responsive */
+@media(max-width:900px){
+.sidebar{position:fixed;left:-300px;width:280px;transition:left .3s;z-index:300}
+.sidebar.open{left:0}
+.sidebar-toggle{display:flex;align-items:center;justify-content:center}
+.main{padding:1.5rem 1.25rem 4rem}
+.audience-grid{grid-template-columns:1fr}
+.links-grid{grid-template-columns:1fr}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:250}
+.overlay.show{display:block}
+}
+
+/* Print */
+@media print{
+.sidebar,.sidebar-toggle{display:none!important}
+.main{max-width:100%;padding:0}
+body{background:#fff;color:#000}
+.slide-card,.qa-item,.link-card,.audience-box,.act-header{border-color:#ddd;background:#f9f9f9}
+.slide-card .tip,.slide-card .key-msg{border-color:#999}
+.hero h1 .accent{color:#0078d4}
+a{color:#0078d4}
+section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="overlay" onclick="toggleSidebar()"></div>
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+
+<div class="layout">
+<aside class="sidebar">
+<div class="sidebar-title">📋 Handbook</div>
+<nav>
+<a href="#overview"><span class="emoji">📐</span> Session Overview</a>
+<a href="#audience"><span class="emoji">🎯</span> Audience & Tone</a>
+<a href="#features"><span class="emoji">📊</span> Feature Status</a>
+<a href="#act1"><span class="emoji">1️⃣</span> Act 1: Setting the Stage</a>
+<a href="#act2"><span class="emoji">2️⃣</span> Act 2: Data Agents Deep Dive</a>
+<a href="#act3"><span class="emoji">3️⃣</span> Act 3: Under the Hood</a>
+<a href="#act4"><span class="emoji">4️⃣</span> Act 4: AI Functions</a>
+<a href="#act5"><span class="emoji">5️⃣</span> Act 5: Roadmap</a>
+<a href="#links"><span class="emoji">🔗</span> Key Links</a>
+<a href="#qa"><span class="emoji">❓</span> Q&A</a>
+<a href="#checklist"><span class="emoji">✅</span> Pre-Talk Checklist</a>
+</nav>
+</aside>
+
+<div class="main">
+<header class="hero">
+<h1>🎤 <span class="accent">The Road Ahead for AI in Fabric</span></h1>
+<p class="subtitle">Data Agents and Intelligent Solutions — Presenter Handbook</p>
+<div class="meta">
+<span>👥 Geert & Raj</span>
+<span>📍 FabCon 2026</span>
+<span>🎞️ 46 Slides</span>
+<span>⏱️ ~45–50 min</span>
+</div>
+</header>
+
+<!-- SESSION OVERVIEW -->
+<section id="overview">
+<h2>📐 Session Overview & Story Arc</h2>
+<table class="overview-table">
+<thead><tr><th>Act</th><th>Slides</th><th>Duration</th><th>Energy</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>1. Setting the Stage</td><td>1–4</td><td>~3 min</td><td><span class="energy energy-warm"></span>Warm</td><td>Ground the audience on Fabric and AI-powered experiences</td></tr>
+<tr><td>2. Data Agents Deep Dive</td><td>5–21</td><td>~18 min</td><td><span class="energy energy-core"></span>Core</td><td>Why, what, how — including GA announcement, integrations, demo</td></tr>
+<tr><td>3. Under the Hood</td><td>22–26</td><td>~7 min</td><td><span class="energy energy-tech"></span>Technical</td><td>Architecture, flow, MCP — for the builders in the room</td></tr>
+<tr><td>4. AI Functions</td><td>27–31</td><td>~5 min</td><td><span class="energy energy-practical"></span>Practical</td><td>Data enrichment capabilities</td></tr>
+<tr><td>5. Roadmap & Announcements</td><td>32–46</td><td>~15 min</td><td><span class="energy energy-high"></span>High</td><td>New features, roadmap, closing vision on MCP</td></tr>
+</tbody>
+</table>
+<div class="takeaway">🎯 <strong>One-line takeaway:</strong> Fabric Data Agents are now GA — a virtual analyst grounded in your enterprise data, consumable everywhere, governed by default.</div>
+</section>
+
+<!-- AUDIENCE -->
+<section id="audience">
+<h2>🎯 Audience & Tone</h2>
+<div class="audience-grid">
+<div class="audience-box">
+<h4>Who's in the room</h4>
+<ul>
+<li>Data engineers & architects</li>
+<li>Analytics leads & BI professionals</li>
+<li>AI/ML practitioners</li>
+<li>IT decision-makers & CTOs</li>
+<li>ISV partners building on Fabric</li>
+</ul>
+</div>
+<div class="audience-box">
+<h4>Your tone</h4>
+<ul>
+<li><strong>Direct and confident</strong> — you know this space</li>
+<li><strong>Practical</strong> — ground everything in real scenarios</li>
+<li><strong>No fluff</strong> — every slide earns its place</li>
+<li><strong>Conversational</strong> — talk to them, not at them</li>
+<li><strong>Honest about status</strong> — clearly call out GA vs Preview vs Coming Soon</li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- FEATURE STATUS -->
+<section id="features">
+<h2>📊 Feature Status Quick Reference</h2>
+<table class="feature-table">
+<thead><tr><th>Feature</th><th>Status</th><th>Slide(s)</th></tr></thead>
+<tbody>
+<tr><td>Fabric Data Agents (core)</td><td><span class="status status-ga">GA</span></td><td>16, 35</td></tr>
+<tr><td>M365 Integration</td><td><span class="status status-ga">GA</span></td><td>9</td></tr>
+<tr><td>Data Agent MCP Server</td><td><span class="status status-ga">GA</span></td><td>11</td></tr>
+<tr><td>Copilot Studio Integration</td><td><span class="status status-ga">GA</span></td><td>12</td></tr>
+<tr><td>Azure AI Foundry Integration</td><td><span class="status status-ga">GA</span></td><td>13</td></tr>
+<tr><td>Public Endpoint</td><td><span class="status status-ga">GA</span></td><td>20</td></tr>
+<tr><td>Mirrored DB in Data Agents</td><td><span class="status status-preview">Preview</span></td><td>17</td></tr>
+<tr><td>Creator Tooling Improvements</td><td><span class="status status-preview">Preview</span></td><td>18</td></tr>
+<tr><td>CI/CD and ALM</td><td><span class="status status-preview">Preview</span></td><td>19</td></tr>
+<tr><td>Graph DB Source</td><td><span class="status status-preview">Preview</span></td><td>37</td></tr>
+<tr><td>Purview Audit Logs</td><td><span class="status status-preview">Preview</span></td><td>38</td></tr>
+<tr><td>Outbound Access Protection</td><td><span class="status status-preview">Preview</span></td><td>39</td></tr>
+<tr><td>SQL Views & Functions</td><td><span class="status status-preview">Preview</span></td><td>40</td></tr>
+<tr><td>AI Functions (notebooks)</td><td><span class="status status-preview">Preview</span></td><td>28–30</td></tr>
+<tr><td>AI Functions in Data Wrangler</td><td><span class="status status-preview">Preview</span></td><td>30–31</td></tr>
+<tr><td>Unstructured Data</td><td><span class="status status-coming">Coming Soon</span></td><td>21</td></tr>
+<tr><td>Service Principal Auth</td><td><span class="status status-coming">Coming Soon</span></td><td>41</td></tr>
+<tr><td>Code Interpreter</td><td><span class="status status-coming">Coming Soon</span></td><td>42</td></tr>
+<tr><td>Visuals in Data Agents</td><td><span class="status status-coming">Coming Soon</span></td><td>43</td></tr>
+<tr><td>Assisted Setup Mode</td><td><span class="status status-coming">Coming Soon</span></td><td>44</td></tr>
+<tr><td>SQL Query Gen Improvements</td><td><span class="status status-coming">Coming Soon</span></td><td>45</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ACT 1 -->
+<section id="act1">
+<h2>1️⃣ Act 1: Setting the Stage</h2>
+<div class="act-header">
+<h3>Setting the Stage</h3>
+<div class="act-meta">
+<span>🎞️ Slides 1–4</span>
+<span>⏱️ ~3 min</span>
+<span><span class="energy energy-warm"></span> Warm up the room</span>
+</div>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 1</span><h4>Title: The Road Ahead for AI in Fabric</h4></div>
+<p>Welcome everyone. Today we are going to talk about the road ahead for AI in Microsoft Fabric, specifically data agents and how they are creating intelligent solutions on top of your enterprise data. This is a story about making AI work with the data you already have, not in some disconnected silo, but right where your business runs.</p>
+<p class="transition">→ "Let me quickly ground us on Fabric itself."</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 2</span><h4>Microsoft Fabric Platform Overview</h4></div>
+<p>Fabric is the unified data platform for the era of AI. It brings together Data Factory, Analytics, Databases, Real-Time Intelligence, Power BI, and now IQ, all on top of OneLake with built-in governance and Copilot experiences. One platform, one copy of data, one security model.</p>
+<div class="tip">💡 Don't linger here — the audience at FabCon knows Fabric. This is a 30-second orientation, not a deep dive.</div>
+<p class="transition">→ "Here's what we'll cover today."</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 3</span><h4>Agenda</h4></div>
+<p>We will start with AI Functions, then go deep into Data Agents — what they are and what is new. We will walk through how to create one and look under the hood. Finally, we will cover the roadmap and next steps.</p>
+<p class="transition">→ "Let's start with the big picture."</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 4</span><h4>AI-Powered Experiences in Fabric</h4></div>
+<p>Two layers of AI in Fabric. First, Copilot-accelerated experiences — AI embedded directly into authoring and consumption tools. Second, AI on your data — this is where Data Agents come in. They sit on top of your enterprise data and act as virtual analysts.</p>
+<div class="key-msg">🎯 Two layers of AI in Fabric — Copilot (AI in tools) vs Data Agents (AI on your data).</div>
+<p class="transition">→ "Let's zoom into Data Agents."</p>
+</div>
+</section>
+
+<!-- ACT 2 -->
+<section id="act2">
+<h2>2️⃣ Act 2: Data Agents Deep Dive</h2>
+<div class="act-header">
+<h3>Data Agents Deep Dive</h3>
+<div class="act-meta">
+<span>🎞️ Slides 5–21</span>
+<span>⏱️ ~18 min</span>
+<span><span class="energy energy-core"></span> The core of the talk</span>
+</div>
+</div>
+<p class="story-arc">Start with the "why" (business value), then show the ecosystem (integrations), demonstrate it live (demo), explain what you need to build one, walk through the creation flow, then hit the GA announcement hard with all the new features.</p>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 5</span><h4>Fabric Data Agents: Virtual Analyst</h4></div>
+<p>A Fabric Data Agent is a virtual analyst purpose-built for your data domain. Not a generic chatbot. It understands your tables, business logic, terminology. Point it at your data, give it instructions, and it becomes an expert. It answers natural language questions by generating SQL, reasoning over relationships, and synthesizing insights.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 6</span><h4>Why Build Data Agents?</h4></div>
+<p>Because you need to ground your AI solutions in enterprise knowledge. The hard part is connecting AI to real, governed, trusted data. Fabric Data Agents act as the bridge. Developers, end-users, and other agents can all consume them through Fabric, Copilot Studio, AI Foundry, or a simple API endpoint. Build once, consume everywhere.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 7</span><h4>Why Data Agents? (Expanded)</h4></div>
+<p>Grounding data insights on enterprise knowledge. Whether consumers are end-users asking questions in Teams, developers building custom apps, or other AI agents in a multi-agent architecture — Data Agents provide a consistent, secure, governed way to access enterprise data. One agent, many surfaces.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 8</span><h4>Architecture: Grounding AI Agents on Fabric IQ</h4></div>
+<p>At the center: Fabric IQ (intelligence layer) and your Data Agent with default tools and skills for data retrieval. Left: enterprise data in OneLake. Right: all consumption surfaces. Key concept: context engineering — creating shared curated views through custom skills and tools.</p>
+<div class="tip">💡 Use your hands to gesture left (data) → center (agent) → right (consumers). The audience should feel the flow.</div>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 9</span><h4>M365 Integration</h4><span class="status status-ga">GA</span></div>
+<p>Data Agents integrate natively with Microsoft 365. Enrich M365 Copilot with your Fabric data intelligence. Security permissions, including row-level and column-level security, are always respected. Your governance model travels with the data.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 10</span><h4>Demo</h4><span class="demo-badge">Live Demo</span></div>
+<p>Show the agent answering a real question, highlight the SQL generation, show the M365/Teams experience if possible.</p>
+<div class="tip">💡 DEMO SLIDE — Keep it tight. Have a backup screenshot ready in case of connectivity issues.</div>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 11</span><h4>Data Agent MCP Server</h4><span class="status status-ga">GA</span></div>
+<p>Data Agents expose a managed MCP Server. MCP (Model Context Protocol) is becoming the standard for how AI systems talk to each other. Consume any Fabric Data Agent from other AI systems using MCP. On-demand insights with secure and auditable data access. A first-class bridge between Fabric and the broader AI ecosystem.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 12</span><h4>Copilot Studio Integration</h4><span class="status status-ga">GA</span></div>
+<p>Enrich custom copilots in Copilot Studio with your Fabric Data Agent's domain expertise. The agent reasons over data in OneLake. RLS and CLS are respected throughout.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 13</span><h4>Azure AI Foundry Integration</h4><span class="status status-ga">GA</span></div>
+<p>Build accurate, relevant, and context-aware multi-agent solutions. Securely ground AI agent outputs in enterprise knowledge. Powerful for complex scenarios where multiple agents need to collaborate.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 14</span><h4>What Do I Need to Build a Data Agent?</h4></div>
+<p>Two things. <strong>Data domain knowledge:</strong> entity relationships, business logic, organizational terminology, semantics, decision-making context. <strong>Data source knowledge:</strong> where the data lives, structure/schema, quality, and lineage.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 15</span><h4>End-to-End Flow</h4></div>
+<p>Create a new Data Agent item → add data sources & select tables → configure with instructions, descriptions, and example queries → publish (versioned snapshot) → share with consumers. Lineage tracked, permissions managed throughout.</p>
+<div class="tip">💡 Walk through each step left to right. This is where many in the audience start mentally planning their first agent.</div>
+</div>
+
+<div class="slide-card" style="border-color:var(--blue);box-shadow:0 0 20px rgba(0,120,212,.15)">
+<div class="card-head"><span class="slide-num" style="background:var(--green)">Slide 16</span><h4>🎉 GA Announcement + What's New</h4><span class="status status-ga">GA</span></div>
+<p>We are announcing the <strong>general availability of Fabric Data Agents</strong>. On top of GA: SQL Views and SQL/KQL Functions support. Graph as a new source. Data Agent prompts logged in Purview for auditing and governance.</p>
+<div class="key-msg">🎯 THIS IS THE MARQUEE MOMENT. Pause, let it land. This is the headline the audience will tweet about.</div>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 17</span><h4>Mirrored DB in Data Agents</h4><span class="status status-preview">Preview</span></div>
+<p>Add mirrored databases as sources, select specific tables, leverage built-in NL2SQL. Works with Oracle, Snowflake, SQL Server, Databricks Unity Catalog, Azure SQL, and more. Data outside Fabric? Mirror it in and build a Data Agent on top.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 18</span><h4>Creator Tooling Improvements</h4><span class="status status-preview">Preview</span></div>
+<p>Data source instructions for table usage and join logic. New multi-tasking experience, markdown editor, new diagnostics tools. Much easier to build and refine high-quality agents.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 19</span><h4>CI/CD and ALM</h4><span class="status status-preview">Preview</span></div>
+<p>Data Agents supported in Git and deployment pipelines. Configuration changes tracked. Lineage preserved. Agent-Ops — same rigor you apply to code, applied to AI agents.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 20</span><h4>Public Endpoint</h4><span class="status status-ga">GA</span></div>
+<p>Connect from VS Code or any external app with secure authentication. Familiar OpenAI client patterns — almost no learning curve. Detailed responses including SQL query execution steps for full transparency.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 21</span><h4>Unstructured Data</h4><span class="status status-coming">Coming Soon</span></div>
+<p>Index PDFs and text files, ask natural language questions over them, eliminate the need for separate search resources. Sign up for early access.</p>
+<p class="transition">→ "Now let's go under the hood."</p>
+</div>
+</section>
+
+<!-- ACT 3 -->
+<section id="act3">
+<h2>3️⃣ Act 3: Under the Hood</h2>
+<div class="act-header">
+<h3>Under the Hood</h3>
+<div class="act-meta">
+<span>🎞️ Slides 22–26</span>
+<span>⏱️ ~7 min</span>
+<span><span class="energy energy-tech"></span> For the builders</span>
+</div>
+</div>
+<p class="story-arc">Shift gear to technical. Show the architecture, walk through an actual query flow, explain components, then go deep on MCP. This is where the data engineers lean in.</p>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 22</span><h4>"How Does It Work?" — Section Divider</h4></div>
+<p>Now let us go under the hood and look at how Data Agents actually work.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 23</span><h4>Technical Design</h4></div>
+<p>The Data Agent sits in the middle with tools, context, and configuration. Connects to all data in OneLake on one side, published through REST/MCP on the other. Design principles: open and compatible, support any data in Fabric, built on Azure AI Agents and OpenAI.</p>
+<div class="tip">💡 The "don't be weird" line always gets a laugh. Lean into it. Philosophy: follow industry standards and shape them where needed.</div>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 24</span><h4>Data Agent Flow</h4></div>
+<p>User asks "how many customers bought X in the last month?" → Agent assesses context and tools → invokes NL2SQL → generates and runs SQL query → returns: 2.3 million customers. Every step is traceable and auditable.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 25</span><h4>Components</h4></div>
+<p>Three categories: <strong>Prompts</strong> — secret sauce and AI instructions. <strong>Tools</strong> — data sources and custom tools via MCP. <strong>Context</strong> — chat history, database logs, and other signals. Accessible via Chat API and MCP Server.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 26</span><h4>MCP in Data Agents</h4></div>
+<p>Every Data Agent is both an <strong>MCP Server</strong> (invoked as a tool by other agents) and an <strong>MCP Client</strong> (every data source is a tool). Future: bring your own MCP Servers. This dual role makes Data Agents incredibly composable in multi-agent architectures.</p>
+<div class="key-msg">🎯 Data Agents are MCP-native. They are both producers and consumers of tools.</div>
+<p class="transition">→ "Let's talk about getting your data ready for AI."</p>
+</div>
+</section>
+
+<!-- ACT 4 -->
+<section id="act4">
+<h2>4️⃣ Act 4: AI Functions</h2>
+<div class="act-header">
+<h3>AI Functions</h3>
+<div class="act-meta">
+<span>🎞️ Slides 27–31</span>
+<span>⏱️ ~5 min</span>
+<span><span class="energy energy-practical"></span> Keep it brisk</span>
+</div>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 27</span><h4>"Get Your Data Ready for AI" — Section Divider</h4></div>
+<p>Now let us shift gears and talk about getting your data ready for AI with AI Functions.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 28</span><h4>AI Functions Overview</h4><span class="status status-preview">Preview</span></div>
+<p>Seamless data enrichment. Invoke state-of-the-art LLMs in a single line of code. Summarization, translation, sentiment analysis, and much more. Coming soon to SQL and Dataflows Gen2.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 29</span><h4>AI Functions Reference Table</h4></div>
+<p>Full list: <code>similarity</code>, <code>classify</code>, <code>analyze_sentiment</code>, <code>extract</code>, <code>fix_grammar</code>, <code>summarize</code>, <code>translate</code>, <code>generate_response</code>.</p>
+<div class="tip">💡 Don't read the whole table. Highlight 2–3 favorites (e.g., ai.classify, ai.extract, ai.generate_response) and point to the rest.</div>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 30</span><h4>AI Functions in Data Wrangler</h4><span class="status status-preview">Preview</span></div>
+<p>Interactive, no-code/low-code transformation. Apply AI-powered enrichments and get instant previews before committing. Makes AI accessible to everyone, not just developers.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 31</span><h4>AI-Powered Capabilities in Data Wrangler</h4></div>
+<p>Smart suggestions with PROSE, Copilot code generation in natural language, automatic Pandas-to-PySpark translation. Some GA, some preview.</p>
+<p class="transition">→ "Let's look at where we're headed."</p>
+</div>
+</section>
+
+<!-- ACT 5 -->
+<section id="act5">
+<h2>5️⃣ Act 5: Roadmap & New Announcements</h2>
+<div class="act-header">
+<h3>Roadmap & Announcements</h3>
+<div class="act-meta">
+<span>🎞️ Slides 32–46</span>
+<span>⏱️ ~15 min</span>
+<span><span class="energy energy-high"></span> Finish strong</span>
+</div>
+</div>
+<p class="story-arc">Roadmap overview → GA recap → new preview features (Graph, Purview, OAP, SQL Views) → future vision (SPN, Code Interpreter, Visuals, Assisted Setup) → close with MCP philosophy.</p>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 32</span><h4>"Roadmap" — Section Divider</h4></div>
+<p>Let us talk about where we are headed.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 33</span><h4>Roadmap Details</h4></div>
+<p><strong>Shipping now:</strong> GA data agents and MCP support. <strong>Private previews:</strong> visualizations, creator-assisted workflows, improved NL2SQL. <strong>Coming May 2026+:</strong> code interpreter, agent observability in Foundry, service principal auth, schema descriptions, feedback loops, unstructured data in OneLake. <strong>AI Functions:</strong> Dataflows Gen2 and Fabric SQL Data Warehouse.</p>
+<div class="tip">💡 The audience will be taking photos of this slide. Give them time.</div>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 34</span><h4>Links & Resources</h4></div>
+<p>All links and resources: AI Functions docs, Data Agent SDK, evaluation samples, Python client, best practices, feature requests, private preview signup. Encourage the audience to explore today.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 35</span><h4>GA Recap Card</h4><span class="status status-ga">GA</span></div>
+<p>Fabric Data Agents are now generally available. Create a powerful data expert by including multiple data source types, configure it with instructions and example queries, and share it. Production-ready, enterprise-grade, available right now.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 36</span><h4>Demo / Transition</h4><span class="demo-badge">Demo</span></div>
+<p>If doing a live demo, this is your setup moment. If no demo, treat as a visual transition.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 37</span><h4>Graph DB Source</h4><span class="status status-preview">Preview</span></div>
+<p>Graph database support as a new data source. NL-to-GQL tool translates user intent into executable graph queries. Relationship-aware reasoning with full traceability. Enhance Graph capabilities with business context from the Data Agent configuration.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 38</span><h4>Purview Audit Logs</h4><span class="status status-preview">Preview</span></div>
+<p>As a Fabric admin, see what users are asking. Monitor interactions and sensitivity labels. Captures user ID, capacity, resources, prompts, and agent responses including queries. Full visibility into how AI is used against your data.</p>
+<div class="key-msg">🎯 This is the slide that makes compliance and security teams happy. Call it out explicitly.</div>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 39</span><h4>Outbound Access Protection</h4><span class="status status-preview">Preview</span></div>
+<p>Blocks all outbound traffic by default, applied at workspace level for granular control, with exceptions for specific connections. Essential for regulated industries.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 40</span><h4>SQL Views & Functions</h4><span class="status status-preview">Preview</span></div>
+<p>Reuse existing business logic. Consistent results aligned with enterprise definitions. Improves NL2SQL accuracy by handling complex joins and calculations through views you've already built.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 41</span><h4>Service Principal Auth</h4><span class="status status-coming">Coming Soon</span></div>
+<p>Secure, app-based access without user sign-ins. Critical for production deployments and connecting Foundry agents to your apps via MCP.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 42</span><h4>Code Interpreter</h4><span class="status status-coming">Coming Soon</span></div>
+<p>Data Agents generate and execute Python in real time in a sandboxed environment. Complex logic, statistics, and visualizations. See the code and outputs for trust and reuse. Takes Data Agents from Q&A to full analytical workloads.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 43</span><h4>Visuals in Data Agents</h4><span class="status status-coming">Coming Soon</span></div>
+<p>Built-in visualizations: line, bar, pie, scatter, area charts. Interactive with tooltips and series selection. Complex data instantly understandable right in the conversation.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 44</span><h4>Assisted Setup Mode</h4><span class="status status-coming">Coming Soon</span></div>
+<p>Collaborative approach to generate configurations. Iterative refinement of instructions and example queries. Validates using creator feedback to resolve ambiguity. A copilot for building your data agent.</p>
+</div>
+
+<div class="slide-card">
+<div class="card-head"><span class="slide-num">Slide 45</span><h4>SQL Query Gen Improvements</h4><span class="status status-coming">Coming Soon</span></div>
+<p>New sub-tools for query exploration. Enhanced few-shot following and filter value substitution. New data exploration tools for novel questions. More accurate answers out of the box.</p>
+</div>
+
+<div class="slide-card" style="border-color:var(--blue);box-shadow:0 0 20px rgba(0,120,212,.15)">
+<div class="card-head"><span class="slide-num">Slide 46</span><h4>🎤 Closing: MCP Philosophy</h4></div>
+<p>MCP Servers are APIs designed for agents — simplified, focused, with reduced security exposure. The SQL tool is read-only by design. MCP distinguishes human from agent actions. Purview integration ties right in. The challenge ahead: code and CLI access give agents infinite abilities, so we need to make it safe.</p>
+<div class="key-msg">🎯 END ON THIS NOTE. Land the vision: safe, governed AI agents with real enterprise data. The future is MCP-native, auditable, and open.</div>
+</div>
+</section>
+
+<!-- KEY LINKS -->
+<section id="links">
+<h2>🔗 Key Links & Resources</h2>
+<div class="links-grid">
+<a class="link-card" href="https://aka.ms/ai-functions/overview" target="_blank"><div class="link-icon">📄</div><div><div class="link-text">AI Functions Overview</div><div class="link-url">aka.ms/ai-functions/overview</div></div></a>
+<a class="link-card" href="https://aka.ms/ai-functions/blog" target="_blank"><div class="link-icon">📝</div><div><div class="link-text">AI Functions Blog</div><div class="link-url">aka.ms/ai-functions/blog</div></div></a>
+<a class="link-card" href="https://aka.ms/Fabric/create-data-agent" target="_blank"><div class="link-icon">📖</div><div><div class="link-text">Data Agent Documentation</div><div class="link-url">aka.ms/Fabric/create-data-agent</div></div></a>
+<a class="link-card" href="https://aka.ms/fabric/data-agent/sdk/docs" target="_blank"><div class="link-icon">⚙️</div><div><div class="link-text">Data Agent SDK Docs</div><div class="link-url">aka.ms/fabric/data-agent/sdk/docs</div></div></a>
+<a class="link-card" href="https://aka.ms/data-agent-evaluation-sample" target="_blank"><div class="link-icon">🧪</div><div><div class="link-text">Evaluation Sample</div><div class="link-url">aka.ms/data-agent-evaluation-sample</div></div></a>
+<a class="link-card" href="https://aka.ms/fabric/data-agent-python-client-sdk" target="_blank"><div class="link-icon">🐍</div><div><div class="link-text">Python Client SDK</div><div class="link-url">aka.ms/fabric/data-agent-python-client-sdk</div></div></a>
+<a class="link-card" href="https://aka.ms/data-agent/semantic-model/best-practices" target="_blank"><div class="link-icon">✨</div><div><div class="link-text">Semantic Model Best Practices</div><div class="link-url">aka.ms/data-agent/semantic-model/best-practices</div></div></a>
+<a class="link-card" href="https://ideas.fabric.microsoft.com" target="_blank"><div class="link-icon">💡</div><div><div class="link-text">Feature Requests</div><div class="link-url">ideas.fabric.microsoft.com</div></div></a>
+<a class="link-card" href="https://aka.ms/DA-private-preview" target="_blank"><div class="link-icon">🔑</div><div><div class="link-text">Private Preview Signup</div><div class="link-url">aka.ms/DA-private-preview</div></div></a>
+<a class="link-card" href="https://aka.ms/unstructured-data-prpr" target="_blank"><div class="link-icon">📁</div><div><div class="link-text">Unstructured Data Preview</div><div class="link-url">aka.ms/unstructured-data-prpr</div></div></a>
+<a class="link-card" href="https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/930" target="_blank"><div class="link-icon">💬</div><div><div class="link-text">MCP Discussion (GitHub)</div><div class="link-url">github.com/.../discussions/930</div></div></a>
+<a class="link-card" href="https://blog.fabric.microsoft.com/en-us/blog/fabric-march-2026-feature-summary" target="_blank"><div class="link-icon">📰</div><div><div class="link-text">March 2026 Feature Summary</div><div class="link-url">blog.fabric.microsoft.com</div></div></a>
+</div>
+</section>
+
+<!-- Q&A -->
+<section id="qa">
+<h2>❓ Anticipated Q&A</h2>
+
+<details class="qa-item"><summary>"Is RLS/CLS enforced when calling via MCP or API?"</summary><div class="qa-answer">Yes. Security permissions, including row-level and column-level security, are always enforced regardless of the consumption surface — whether it is Teams, Copilot Studio, AI Foundry, MCP, or the public endpoint.</div></details>
+
+<details class="qa-item"><summary>"Can I use Data Agents with data outside Fabric?"</summary><div class="qa-answer">Yes, through Mirrored Databases. You can mirror data from Oracle, Snowflake, SQL Server, Databricks, Azure SQL, and more into OneLake and build Data Agents on top. The agent treats mirrored data just like any native Fabric data.</div></details>
+
+<details class="qa-item"><summary>"What LLM powers the agent?"</summary><div class="qa-answer">Data Agents are built on Azure AI Agents and OpenAI. The specific model is managed by the platform. The focus is on the enterprise-grade tooling, governance, and integration rather than letting users swap models.</div></details>
+
+<details class="qa-item"><summary>"When will Code Interpreter be available?"</summary><div class="qa-answer">It is on the roadmap for May 2026 onwards. Sign up for the private preview at aka.ms/DA-private-preview to get early access.</div></details>
+
+<details class="qa-item"><summary>"Can Data Agents write back to the database?"</summary><div class="qa-answer">No. By design, the SQL tool is read-only. This is intentional for security and auditability — the agent can query and reason over data, but cannot modify it.</div></details>
+
+<details class="qa-item"><summary>"How is this different from Copilot in Power BI?"</summary><div class="qa-answer">Copilot in Power BI is optimized for the BI consumption experience — asking questions about reports and visuals. Data Agents are broader — they work across any data in OneLake, generate SQL, support multi-source reasoning, and can be consumed programmatically via API/MCP. Think of Data Agents as the engine that can power Copilot in Power BI and much more.</div></details>
+
+<details class="qa-item"><summary>"What about cost / licensing?"</summary><div class="qa-answer">Data Agents consume Fabric capacity units (CUs). As a GA feature, it is included in your Fabric capacity. Specific CU consumption depends on query complexity and data volume.</div></details>
+
+<details class="qa-item"><summary>"Can I bring my own MCP tools?"</summary><div class="qa-answer">Not yet, but it is on the roadmap. Today, Data Agents use built-in tools (NL2SQL, etc.). BYO MCP Server with custom tools is listed as a future capability.</div></details>
+</section>
+
+<!-- CHECKLIST -->
+<section id="checklist">
+<h2>✅ Pre-Talk Checklist</h2>
+<p class="checklist-section">🔧 Technical</p>
+<ul class="checklist">
+<li>Demo environment working and pre-loaded</li>
+<li>Backup screenshots for demo slides (10, 36)</li>
+<li>Internet connectivity confirmed</li>
+<li>Presenter view enabled with notes visible</li>
+<li>Font rendering checked (Segoe Sans Display)</li>
+<li>Slide clicker tested and paired</li>
+</ul>
+<p class="checklist-section">🎤 Content</p>
+<ul class="checklist">
+<li>Reviewed speaker notes for all 46 slides</li>
+<li>Rehearsed GA announcement moment (slide 16)</li>
+<li>Timed the full run (target: 45–50 min)</li>
+<li>Confirmed Geert's sections and handoff points</li>
+<li>Noted which slides the audience will photograph (33, 34)</li>
+<li>Prepared one opening anecdote or hook</li>
+</ul>
+</section>
+
+<footer>
+Raj Balakrishnan & Geert · FabCon 2026 · Built by Benji 🐾
+</footer>
+</div>
+</div>
+
+<script>
+function toggleSidebar(){
+document.querySelector('.sidebar').classList.toggle('open');
+document.querySelector('.overlay').classList.toggle('show');
+}
+// Active nav highlight
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.sidebar nav a');
+const obs=new IntersectionObserver(entries=>{
+entries.forEach(e=>{if(e.isIntersecting){
+navLinks.forEach(l=>l.classList.remove('active'));
+const a=document.querySelector('.sidebar nav a[href="#'+e.target.id+'"]');
+if(a)a.classList.add('active');
+}});
+},{rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(s=>obs.observe(s));
+// Close sidebar on nav click (mobile)
+navLinks.forEach(l=>l.addEventListener('click',()=>{
+document.querySelector('.sidebar').classList.remove('open');
+document.querySelector('.overlay').classList.remove('show');
+}));
+</script>
+</body>
+</html>
